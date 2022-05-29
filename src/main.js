@@ -17,13 +17,13 @@ const ABS_IMG = 'https://image.tmdb.org/t/p/w300'
 
 
 // Funcion asincrona para mostrar las Peliculas en tendencia
-
 async function getTrendingMovies () {
     const { data } = await api(`${TRENDING}`);
     const movies = data.results;
 
     const toRender = [];
-    const section = document.querySelector('#trendingPreview .trendingPreview-movieList')
+    const section = trendingMoviesPreviewList;
+    section.innerHTML = '';
 
     movies.forEach((movie) => {
         const movieContainer = document.createElement('div');
@@ -44,13 +44,13 @@ async function getTrendingMovies () {
 
 
 // Funcion asincrona para mostrar las categorias de peliculas
-
 async function getCategoriesMovies () {
     const { data } = await api(`${CATEGORIES_URL}`);
     const categories = data.genres;
 
     const toRender = [];
-    const article = document.querySelector('#categoriesPreview .categoriesPreview-list')
+    const article = categoriesPreviewList
+    article.innerHTML = '';
 
     categories.forEach((category) => {
         const categoryContainer = document.createElement('div');
@@ -69,6 +69,3 @@ async function getCategoriesMovies () {
 
     article.append(...toRender);
 };
-
-getTrendingMovies();
-getCategoriesMovies();
