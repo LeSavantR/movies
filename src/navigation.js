@@ -5,16 +5,19 @@
 searchFormBtn.addEventListener('click', (e) => {
     e.preventDefault();
     location.hash = '#search=' + searchFormInput.value;
+    window.scrollTo(0, 0);
 });
 
 trendingBtn.addEventListener('click', (e) => {
     e.preventDefault();
     location.hash = '#trends';
+    window.scrollTo(0, 0);
 });
 
 arrowBtn.addEventListener('click', (e) => {
     e.preventDefault();
     location.hash = '#home';
+    window.scrollTo(0, 0);
 });
 
 window.addEventListener('DOMContentLoaded', navigation, false);
@@ -107,7 +110,7 @@ function categoryPage () {
     headerSection.classList.remove('header-container--long')
     headerSection.style.backgrpundColor = '';
     arrowBtn.classList.remove('inactive');
-    arrowBtn.classList.add('header-arrow--white');
+    arrowBtn.classList.remove('header-arrow--white');
     headerTitle.classList.add('inactive');
     headerCategoryTitle.classList.remove('inactive');
 
@@ -119,6 +122,10 @@ function categoryPage () {
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
+
+    const [ hash, id_name ] = location.hash.split('=');
+    const [ categoryId, categoryName ] = id_name.split('-');
+    getMoviesByCategory(categoryId, categoryName);
 };
 
 // Home Page
