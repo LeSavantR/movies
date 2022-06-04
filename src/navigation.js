@@ -16,7 +16,13 @@ trendingBtn.addEventListener('click', (e) => {
 
 arrowBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    location.hash = '#home';
+
+    if (document.domain !== 'localhost') {
+        location.hash = '#home';
+    } else {
+        history.back();
+    }
+
     window.scrollTo(0, 0);
 });
 
@@ -24,7 +30,6 @@ window.addEventListener('DOMContentLoaded', navigation, false);
 window.addEventListener('hashchange', navigation, false);
 
 function navigation(){
-    console.log({ location });
 
     if(location.hash.startsWith('#trends')){
         trendingPage();
@@ -58,6 +63,10 @@ function trendingPage () {
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
+
+    // Trending Movies
+    headerCategoryTitle.innerText = 'Tendencias';
+    getTrendingMovies();
 };
 
 // Search Page
@@ -69,7 +78,7 @@ function searchPage () {
     arrowBtn.classList.remove('inactive');
     arrowBtn.classList.remove('header-arrow--white');
     headerTitle.classList.add('inactive');
-    headerCategoryTitle.classList.remove('inactive');
+    headerCategoryTitle.classList.add('inactive');
 
     // Search Section
     searchForm.classList.remove('inactive');
@@ -79,6 +88,11 @@ function searchPage () {
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
+
+    const [ _, query ] = location.hash.split('=');
+    // console.log(query)
+
+    getMoviesBySearch(query);
 };
 
 // Movie Page
@@ -125,7 +139,8 @@ function categoryPage () {
 
     const [ hash, id_name ] = location.hash.split('=');
     const [ categoryId, categoryName ] = id_name.split('-');
-    getMoviesByCategory(categoryId, categoryName);
+    const title = categoryName.replace(/%20/g, ' ');
+    getMoviesByCategory(categoryId, title);
 };
 
 // Home Page
@@ -148,6 +163,6 @@ function homePage () {
 
     // Peticiones asincronas para mostrar
     // las peliculas en tendencia y las categorias
-    getTrendingMovies();
+    getTrendingMoviesPreview();
     getCategoriesMovies();
 };
