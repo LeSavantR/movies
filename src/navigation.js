@@ -115,6 +115,10 @@ function moviePage () {
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.add('inactive');
     movieDetailSection.classList.remove('inactive');
+
+    // Funcion para obtener la informacion de la pelicula
+    const [ _, movieId ] = location.hash.split('=');
+    getMovieDetail(movieId);
 };
 
 // Category Page
@@ -148,7 +152,7 @@ function homePage () {
     // Modificaciones en el DOM para mostrar la pagina de inicio
     // Header
     headerSection.classList.remove('header-container--long')
-    headerSection.style.backgrpundColor = '';
+    headerSection.style.background = '';
     arrowBtn.classList.add('inactive');
     headerTitle.classList.remove('inactive');
     headerCategoryTitle.classList.add('inactive');

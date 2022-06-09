@@ -13,7 +13,8 @@ const api = axios.create({
 // const API_URL = 'https://api.themoviedb.org/3/';
 const TRENDING = 'trending/movie/day';
 const CATEGORIES_URL = 'genre/movie/list';
-const ABS_IMG = 'https://image.tmdb.org/t/p/w300'
+const ABS_IMG = 'https://image.tmdb.org/t/p/w300';
+const AB_IMG = 'https://image.tmdb.org/t/p/w500';
 const CATEGORIES_MOVIES = 'discover/movie';
 const SEARCH_QUERY = 'search/movie';
 
@@ -24,6 +25,9 @@ function movieConstructor (list, listRender) {
         // Movie container
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
+        movieContainer.addEventListener('click', () => {
+            location.hash = `#movie=${item.id}`;
+        });
 
         // Movie img
         const movieImg = document.createElement('img');
@@ -92,6 +96,7 @@ async function getCategoriesMovies () {
 
     const toRender = [];
     const article = categoriesPreviewList;
+    article.innerHTML = '';
 
     categoriesConstructor(categories, toRender);
 
@@ -114,6 +119,7 @@ async function getMoviesByCategory (categoryId, categoryName) {
     const toRender = [];
     const section = genericSection;
     headerCategoryTitle.innerText = categoryName;
+    headerSection.style.background = '';
     section.innerHTML = '';
 
     // Loop de peliculas
@@ -155,7 +161,6 @@ async function getTrendingMovies() {
     const { data } = await api(`${TRENDING}`, {
         params: {},
     });
-    console.log(data);
     const movies = data.results;
 
     // Area de trabajo y renderizado de peliculas
@@ -167,5 +172,36 @@ async function getTrendingMovies() {
     movieConstructor(movies, toRender);
 
     // Renderizado de peliculas
+    section.append(...toRender);
+};
+
+
+// Funcion para mostrar la informacion de una pelicula
+async function getMovieDetail(id){
+
+    // Consulta a la API
+    const { data } = await api(`movie/${id}`, {
+        params: {},
+    });
+
+    // Elementos del DOM
+    const movieImgUrl = `${AB_IMG}${data.poster_path}`;
+    headerSection.style.background = `
+        linear-gradient(180deg, rgba(0, 0, 0, 0.35) 19.27%, rgba(0, 0, 0, 0) 29.17%),
+        url(${movieImgUrl})
+    `;
+    movieDetailTitle.textContent = data.title;
+    movieDetailDescription.textContent = data.overview;
+    movieDetailScore.textContent = data.vote_average;
+
+    // Categorias
+    const categories = data.genres;
+
+    // Renderizado de peliculas
+    const toRender = [];
+    const section = movieDetailCategoriesList;
+    section.innerHTML = '';
+    categoriesConstructor(categories, toRender);
+
     section.append(...toRender);
 };
