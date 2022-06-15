@@ -66,6 +66,7 @@ function trendingPage () {
 
     // Trending Movies
     headerCategoryTitle.innerText = 'Tendencias';
+    window.scrollTo(0, 0);
     getTrendingMovies();
 };
 
@@ -90,14 +91,14 @@ function searchPage () {
     movieDetailSection.classList.add('inactive');
 
     const [ _, query ] = location.hash.split('=');
-    // console.log(query)
+    window.scrollTo(0, 0);
 
     getMoviesBySearch(query);
 };
 
 // Movie Page
 function moviePage () {
-    console.log('Vista de pelicula');
+
     // Modificaciones en el DOM para mostrar la pagina de inicio
     // Header
     headerSection.classList.add('header-container--long')
@@ -118,6 +119,7 @@ function moviePage () {
 
     // Funcion para obtener la informacion de la pelicula
     const [ _, movieId ] = location.hash.split('=');
+    window.scrollTo(0, 0);
     getMovieDetail(movieId);
 };
 
@@ -144,6 +146,7 @@ function categoryPage () {
     const [ hash, id_name ] = location.hash.split('=');
     const [ categoryId, categoryName ] = id_name.split('-');
     const title = categoryName.replace(/%20/g, ' ');
+    window.scrollTo(0, 0);
     getMoviesByCategory(categoryId, title);
 };
 
@@ -167,6 +170,7 @@ function homePage () {
 
     // Peticiones asincronas para mostrar
     // las peliculas en tendencia y las categorias
+    window.scrollTo(0, 0);
     getTrendingMoviesPreview();
     getCategoriesMovies();
 };

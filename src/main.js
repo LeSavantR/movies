@@ -204,4 +204,28 @@ async function getMovieDetail(id){
     categoriesConstructor(categories, toRender);
 
     section.append(...toRender);
+
+    getRelatedMovieId(id);
+};
+
+
+async function getRelatedMovieId(id){
+
+    // Consulta a la API
+    const { data } = await api(`movie/${id}/recommendations`, {
+        params: {},
+    });
+
+    // Peliculas recomendadas
+    const recommendations = data.results;
+
+    // Renderizado de peliculas
+    const toRender = [];
+    const section = relatedMoviesContainer;
+    section.innerHTML = '';
+
+    // Elementos del DOM
+    movieConstructor(recommendations, toRender);
+
+    section.append(...toRender);
 };
