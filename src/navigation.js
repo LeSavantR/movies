@@ -1,6 +1,3 @@
-// Language: javascript
-// Path: src/navigation.js
-
 // Eventos para los botones
 searchFormBtn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -125,6 +122,7 @@ function moviePage () {
 
 // Category Page
 function categoryPage () {
+
     // Modificaciones en el DOM para mostrar la pagina de inicio
     // Header
     headerSection.classList.remove('header-container--long')

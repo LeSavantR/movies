@@ -18,10 +18,28 @@ const AB_IMG = 'https://image.tmdb.org/t/p/w500';
 const CATEGORIES_MOVIES = 'discover/movie';
 const SEARCH_QUERY = 'search/movie';
 
+// Utils
+const lazyLoader = new IntersectionObserver((entries) => {
+
+    // Todas las entradas
+    entries.forEach((entry) => {
+
+        // Validar si la entrada esta visible
+        if (entry.isIntersecting) {
+
+            // Obtener los datos de la imagen
+            entry.target.src = entry.target.getAttribute('data-img');
+            lazyLoader.unobserve(entry.target);
+        }
+    });
+});
+
+
 // Funcion para construir lo que se renderizara en el DOM
 function movieConstructor (list, listRender) {
 
     list.forEach((item)=> {
+
         // Movie container
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
@@ -33,10 +51,15 @@ function movieConstructor (list, listRender) {
         const movieImg = document.createElement('img');
         movieImg.classList.add('movie-img');
         movieImg.setAttribute('alt', `${item.title}`);
-        movieImg.setAttribute('src', `${ABS_IMG}${item.poster_path}`);
+        movieImg.setAttribute('data-img', `${ABS_IMG}${item.poster_path}`);
 
+        // Agregando Observador a cada Elemento
+        lazyLoader.observe(movieImg);
+
+        // Agregando cada Elemento a su contenedor padre
         movieContainer.append(movieImg);
 
+        // Agregando cada contenedor padre a la lista de renderizado
         listRender.push(movieContainer);
     });
 };
